@@ -1,3 +1,41 @@
-h1= title
-p Welcome to #{title}
-p Key Exists = #{key}
+section.container
+	header.main-header
+		h1= title
+
+	div.padder
+	
+	section.main-left
+		section.blog-container
+			div.blog-title This is My Title
+			p Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus bibendum massa eget eros commodo viverra. Morbi blandit auctor purus in viverra. Sed tristique tortor tortor, sagittis faucibus tortor. Maecenas mauris libero, rutrum quis varius quis, vehicula et risus. Integer orci justo, varius sit amet tempor eu, laoreet ut ipsum. Mauris massa odio, ullamcorper eget imperdiet eu, aliquet at lacus. Etiam nunc purus, sodales at accumsan a, elementum id quam. Vestibulum nunc elit, placerat viverra faucibus vitae, varius mollis urna. Nunc condimentum eros sed tellus congue gravida. Etiam sit amet tortor enim, vel facilisis felis. Donec placerat urna posuere neque facilisis porta interdum sem malesuada.
+
+			p Mauris viverra ipsum vel quam lobortis eget rutrum dui sagittis. Suspendisse in vehicula ipsum. Donec vitae quam et felis mattis faucibus. Nullam ac erat purus, vel convallis nisi. Aenean lobortis dui eget justo egestas posuere. Aliquam erat volutpat. Sed eros dui, iaculis vitae tempor eu, ultrices ut mi. Nunc blandit faucibus rhoncus. Mauris eu nisl felis, in gravida augue. Praesent molestie turpis vitae mi ornare id laoreet odio viverra. Nam ut diam urna. Donec malesuada auctor risus, vitae ultrices metus elementum quis. Aliquam ut dolor ac nunc viverra congue. Duis nec dolor quis enim rhoncus placerat placerat vel elit.
+
+			p Suspendisse laoreet arcu eu leo volutpat dapibus. Vestibulum interdum sagittis augue ut euismod. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Sed tortor libero, pretium ac aliquet ac, molestie in mi. Mauris vitae lorem quis dolor facilisis aliquet. Vivamus posuere ultrices est, a hendrerit turpis gravida id. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur ante dolor, mattis non ornare eu, aliquam ut elit. Aliquam ut orci eros, ac euismod leo. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Aenean eros massa, ornare ac congue ut, fermentum ut tellus. Nunc tincidunt varius metus nec faucibus. Maecenas rhoncus magna sit amet libero cursus et dictum tortor suscipit.
+
+			p Proin libero nisi, imperdiet ut suscipit vitae, ullamcorper eget ante. Suspendisse quis lacus orci, in cursus arcu. Nulla imperdiet, nibh vel adipiscing volutpat, ante orci venenatis tellus, accumsan fringilla dolor ipsum vitae eros. Aenean et metus sed tellus elementum dictum. Vivamus in augue a neque venenatis aliquam. Pellentesque sem arcu, dictum a eleifend sit amet, mollis vitae turpis. Donec augue justo, tristique mattis pellentesque sit amet, pretium ut est. Phasellus ac vulputate tortor. Cras iaculis, erat in mattis tristique, dolor purus malesuada orci, in rhoncus diam sem convallis sem. Maecenas quam ligula, adipiscing ac convallis in, luctus a magna. Nulla sagittis eros eget nunc tristique non mattis sapien faucibus. Mauris ornare turpis quis sapien faucibus ac dictum elit interdum. Nulla quis est elit, et posuere nibh. Nulla ac ligula lacus.
+
+			p Pellentesque sagittis urna eget sapien porta sagittis. Maecenas rhoncus porta turpis, vitae vulputate neque gravida in. Nam in ipsum metus. Duis sagittis nisl quis augue ullamcorper facilisis. Fusce ipsum mauris, malesuada vel pulvinar vel, rhoncus non metus. Cras fermentum sagittis sagittis. Quisque mauris libero, ultrices eu vestibulum nec, interdum vitae arcu. Nam porta congue tempor. Pellentesque nec metus nisi, ac ultrices elit. Phasellus ut erat lorem, vel consectetur est. Donec laoreet mattis scelerisque. Aenean orci massa, tempor non consequat at, mollis non odio. Proin eu nisl nec leo tincidunt molestie sit amet pretium justo. Phasellus quis nulla nisl, vitae convallis diam. Curabitur risus tellus, condimentum sed sagittis vitae, dapibus vel nisi.
+
+	section.main-right
+		section.blog-finder-section
+			section.blog-finder-input
+				div
+					input(type='search', placeholder='Myblog.tumblr.com')
+				div.blog-finder-submit
+					input(type='submit', value='Load Blog')
+			section.blog-finder-list
+				ul
+					li stonecarvedllama.tumblr.com
+					li dubsteplyrics.tumblr.com
+		section.blog-navigation
+			ul
+				li.previous-blog
+				li.previous-post
+				li.play
+				li.next-post
+				li.next-blog
+	
+	footer.main-footer
+		div.copyright &copy; 2012 James Eggers
+	

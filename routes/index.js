@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Express', key: process.env.TUMBLR_OAUTH.length > 0 });
+  res.render('index', { title: 'Hack the Midwest\'s Rambler'});
 };
