@@ -38,7 +38,7 @@ function getText(blog, index){
 		, pattern = /^(.*)\.tumblr\.com/
 		, blogName = pattern.exec(blog)[1];
 	
-	if (!_blogs[blogName]){getInfo(blog);}	
+	if (!_blogs[blogName.toLowerCase()]){getInfo(blog);}	
 	
 	index = index || 0;
 	api.text({limit: index+1}, formatTextResponse);
@@ -47,7 +47,7 @@ function getText(blog, index){
 function infoResponse(err, res) {
 	if (err) {formatErrorResponse(err, res);}
 	
-	_blogs[res.blog.name] = res.blog;
+	_blogs[res.blog.name.toLowerCase()] = res.blog;
 	emit("infoReceived", res.blog);
 }
 	
@@ -56,7 +56,7 @@ function formatTextResponse(err, res){
 	
 	var postIndex = res.posts.length
 		, post = res.posts[postIndex - 1]
-		, blogName = post.blog_name;
+		, blogName = post.blog_name.toLowerCase();
 	
 	var responseObject = {
 		url: post.post_url
