@@ -25,11 +25,13 @@ function emit(channel) {
 	}
 }
 
-function getInfo(blog){
-	console.log(_oAuth);
+function getInfo(blog, socket){
 	var api = new Tumblr(blog, _oAuth);
-	api.info(function(err, res){
-		console.log(res.blor);
+	api.info(function(err, res) {
+		if (err) {formatErrorResponse(err, res);}
+
+		_blogs[res.blog.name.toLowerCase()] = res.blog;
+		socket.emit("infoReceived", res.blog);
 	});
 }
 
@@ -42,13 +44,6 @@ function getText(blog, index){
 	
 	index = index || 0;
 	api.text({limit: index+1}, formatTextResponse);
-}
-
-function infoResponse(err, res) {
-	if (err) {formatErrorResponse(err, res);}
-	
-	_blogs[res.blog.name.toLowerCase()] = res.blog;
-	emit("infoReceived", res.blog);
 }
 	
 function formatTextResponse(err, res){
@@ -71,6 +66,7 @@ function formatTextResponse(err, res){
 }
 
 function formatErrorResponse(err, res){
+	console.log(err);
 	emit("errorResponseReceived", err);
 }
 

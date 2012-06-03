@@ -1,5 +1,6 @@
 @import url(reset.css);
-
+h3 {font-size:1.2em;}
+ul {margin-left:25px; list-style:disc;}
 html, body{width: 100%; height:100%;}
 section, header, footer {box-sizing:border-box;}
 
@@ -113,6 +114,9 @@ footer.main-footer {
 }
 .blog-finder-list {
 	padding:0px 15px;
+}
+.blog-finder-list ul {
+	list-style:none;
 }
 
 .blog-finder-list li {
