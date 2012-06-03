@@ -40,7 +40,7 @@
 		if ($(blogs[0]).hasClass("active")){
 			return;
 		}
-			
+		//teardownAudioEvents();
 		for (var i = 1, len = blogs.length; i < len; i++){
 			previousBlog = $(blogs[i - 1]);
 			currentBlog = $(blogs[i]);
@@ -64,7 +64,7 @@
 		if ($(blogs[blogCount - 1]).hasClass("active")){
 			return;
 		}
-			
+		//teardownAudioEvents();	
 		for (var i = 0; i < blogCount - 1; i++){
 			nextBlog = $(blogs[i + 1]);
 			currentBlog = $(blogs[i]);
@@ -91,7 +91,7 @@
 	
 	function textResponseReceived(data){
 		_blogTitle.text(data.title);
-		_blogBody.html("");
+		_blogBody.html("<div id=\"audio\"></div>");
 		_blogBody.append("<p>" + data.date + "</p>");
 		_blogBody.append("<p>" + data.url + "</p>");
 		_blogBody.append("<div class=\"audio-start\">" + data.body + "</div>");
@@ -104,6 +104,7 @@
 	
 	function getNextPost(){
 		if (_currentPostIndex !== _info.posts - 1){
+			//teardownAudioEvents();
 			var blog = $("li.active").text();
 			_currentPostIndex += 1;
 			_socket.emit("getPost", {blog: blog, index:_currentPostIndex});
@@ -112,19 +113,88 @@
 	
 	function getPreviousPost(){
 		if (_currentPostIndex !== 0) {
+			//teardownAudioEvents();
 			var blog = $("li.active").text();
 			_currentPostIndex -= 1;
 			_socket.emit("getPost", {blog: blog, index:_currentPostIndex});
 		}
 	}
 	
+	var _isPlaying = false
+		, _hasStarted = false
+		, _recursionCounter = 0;
+		
+	function setupAudioEvents(){
+		var audio = $("audio")[0];
+		
+		if (!audio && _recursionCounter < 30) {
+			setTimeout(1000, setupAudioEvents);
+			_recursionCounter++;
+			return;
+		}
+		
+		audio.addEventListener("onpause", function(){
+			_play.find("img").attr("src", "/images/control-play-icon.png");
+			_isPlaying = false;
+			_hasStarted = true;
+		});
+		
+		audio.addEventListener("onplay", function(){
+			_play.find("img").attr("src", "/images/control-pause-icon.png");
+			_isPlaying = true;
+			_hasStarted = true;
+		});
+		
+		audio.addEventListener("onended", function(){
+			_play.find("img").attr("src", "/images/control-play-icon.png");
+			_isPlaying = false;
+			_hasStarted = false;
+		});
+	}
+	
+	function teardownAudioEvents(){
+		var audio = $("audio")[0];
+		
+		if (audio) {
+			audio.removeEventListener("onpause", function(){
+				_play.find("img").attr("src", "/images/control-play-icon.png");
+				_isPlaying = false;
+				_hasStarted = true;
+			});
+		
+			audio.removeEventListener("onplay", function(){
+				_play.find("img").attr("src", "/images/control-pause-icon.png");
+				_isPlaying = true;
+				_hasStarted = true;
+			});
+		
+			audio.removeEventListener("onended", function(){
+				_play.find("img").attr("src", "/images/control-play-icon.png");
+				_isPlaying = false;
+				_hasStarted = false;
+			});
+		}
+		
+		_isPlaying = false;
+		_hasStarted = false;
+	}
+	
 	function play(){
-		showClippy();
-		var text = $(".audio-start");
-		if (text.length > 0) {
-			speak(text.text());
-		} else {
-			speak("No Post Found");
+		if (!_isPlaying && !_hasStarted){
+			showClippy();
+			var text = $(".audio-start");
+			if (text.length > 0) {
+				speak(text.text());
+				//_play.find("img").attr("src", "/images/control-pause-icon.png");
+			} else {
+				speak("No Post Found");
+			}
+			
+			//setupAudioEvents();
+		} else if (!_isPlaying && _hasStarted) {
+			$("audio")[0].play();
+		} else if (_isPlaying) {
+			$("audio")[0].pause();
 		}
 	}
 	
@@ -132,6 +202,7 @@
 	function showClippy(){
 		if (!_clippy_is_loaded){
 			clippy.load("Clippy", function(agent){
+				_clippy_is_loaded = true;
 				agent.show();
 				agent.speak("Please wait while I prepare to read this to you. (10-30 seconds)");
 				agent.play("Thinking");

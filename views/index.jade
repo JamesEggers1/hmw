@@ -1,5 +1,4 @@
 section.container
-	div#audio
 	header.main-header
 		h1= title
 
@@ -12,6 +11,14 @@ section.container
 				p Rambler is a simple application written for the Hack the Midwest competition held in Kansas City on 02 & 03 June 2012.
 				p This application interacts with Tumblr.  Simply type in a Tumblr blog in the field provided and information will be downloaded about the blog.
 				p After information has been retrieved, you can step through each post and even have the website read it back to you.
+				p
+					h3 Instructions
+					ul 
+						li Load Tumblr blogs in the space provided. (Exclude http://)
+						li Click on Load Blog
+						li To move between blogs, press the Previous/Next Blog buttons
+						li To move between posts on the current blog, press the Previous/Next Post buttons
+						li To have the site read your post back to you, press Play after a post is loaded
 				p
 					h3 Technical Info
 					ul
@@ -40,15 +47,15 @@ section.container
 					//li.active dubsteplyrics.tumblr.com
 		section.blog-navigation
 			ul
-				li.previous-blog
+				li.previous-blog(title='Previous Blog')
 					img(src="/images/control-start-icon.png")
-				li.previous-post
+				li.previous-post(title='Previous Post')
 					img(src="/images/control-rewind-icon.png")
-				li.play
+				li.play(title='Play')
 					img(src="/images/control-play-icon.png")
-				li.next-post
+				li.next-post(title='Next Post')
 					img(src="/images/control-fastforward-icon.png")
-				li.next-blog
+				li.next-blog(title='Next Blog')
 					img(src="/images/control-end-icon.png")
 	
 	footer.main-footer

@@ -1,6 +1,7 @@
 @import url(reset.css);
-h3 {font-size:1.2em;}
+h3 {font-size:1.2em; display:block; width:100%; border-bottom:1px dashed;}
 ul {margin-left:25px; list-style:disc;}
+ul li {margin-top:10px;}
 .clearfix {clear:both;}
 
 html, body{width: 100%; height:100%;}
@@ -133,6 +134,7 @@ footer.main-footer {
 }
 
 .blog-finder-list li {
+	padding:0;
 	padding-left: 15px;
 	margin:5px 0;
 	font-size:0.9em;
@@ -145,17 +147,21 @@ footer.main-footer {
 
 .blog-navigation {
 	margin-top:15px;
+	border: 1px solid #ccc;
+	border-radius: 20px;
+	box-shadow:3px 3px 3px rgba(0,0,0,0.2);
+	background:rgba(128, 255, 128, 0.1);
 }
 
 .blog-navigation li{
 	display:inline-block;
 	width:17%;
 	margin-left:5px;
-	border: 1px solid #ccc;
-	border-radius: 20px;
-	box-shadow:3px 3px 3px rgba(0,0,0,0.2);
-	background:rgba(128, 255, 128, 0.1);
 	cursor:pointer;
+}
+
+.blog-navigation li img {
+	opacity:0.7;
 }
 
 li.previous-blog img,
