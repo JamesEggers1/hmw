@@ -1,6 +1,8 @@
 @import url(reset.css);
 h3 {font-size:1.2em;}
 ul {margin-left:25px; list-style:disc;}
+.clearfix {clear:both;}
+
 html, body{width: 100%; height:100%;}
 section, header, footer {box-sizing:border-box;}
 
@@ -96,11 +98,20 @@ footer.main-footer {
 	border:1px solid #ccc;
 	border-radius:15px;
 }
+.blog-finder-row-two {
+	width:100%;
+}
+.blog-finder-input .blog-finder-error {
+	display:inline-block;
+	width:58%;
+	color:#red;
+}
 
 .blog-finder-input .blog-finder-submit{
-	display:block;
-	width:90%;
+	display:inline-block;
+	width:40%;
 	margin:auto;
+	float:right;
 	text-align:right;
 }
 
@@ -111,6 +122,8 @@ footer.main-footer {
 	color:#333;
 	font-size:1.2em;
 	cursor:pointer;
+	background:#eee;
+	padding:5px 10px;
 }
 .blog-finder-list {
 	padding:0px 15px;
