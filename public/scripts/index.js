@@ -3,6 +3,7 @@
 	var _blogTitle = $(".blog-title")
 		, _blogBody = $(".blog-body")
 		, _blog = $("#Blog")
+		, _blogError = $(".blog-finder-error")
 		, _blogList = $(".blog-finder-list > ul")
 		, _submit = $("input[type='submit']")
 		, _previousBlog = $(".previous-blog")
@@ -23,16 +24,20 @@
 		
 	function addBlogToList(e){
 		e.preventDefault();
+		_blogError.html("");
 		var blogUri = _blog.val().trim();
 		if (blogUri.length > 0 && /^(.*)\.tumblr\.com$/.test(blogUri)){
 			_blogList.find("li").removeClass("active");
 			_blogList.append("<li class=\"active\">" + blogUri + "</li>");
 			getInfo(blogUri);
 			getFirstPost(blogUri);
+		} else {
+			_blogError.html("Invalid Blog or Blog Format");
 		}
 	}
 	
 	function changeToPreviousBlog(e){
+		_blogError.html("");
 		var blogs = _blogList.find("li")
 			, previousBlog
 			, currentBlog;
@@ -56,6 +61,7 @@
 	}
 	
 	function changeToNextBlog(e){
+		_blogError.html("");
 		var blogs = _blogList.find("li")
 			, blogCount = blogs.length
 			, nextBlog
@@ -81,15 +87,17 @@
 	
 	
 	function getInfo(blog){
+		_blogError.html("");
 		_socket.emit("getInfo", {blog: blog});
 	}
 	
 	function infoReceived(data){
 		_info = data;
-		console.log(_info);
+		//console.log(_info);
 	}
 	
 	function textResponseReceived(data){
+		_blogError.html("");
 		_blogTitle.text(data.title);
 		_blogBody.html("<div id=\"audio\"></div>");
 		_blogBody.append("<p>" + data.date + "</p>");
@@ -98,11 +106,13 @@
 	}
 	
 	function getFirstPost(blog){
+		_blogError.html("");
 		_currentPostIndex = 0;
 		_socket.emit("getPost", {blog: blog, index:0});
 	}
 	
 	function getNextPost(){
+		_blogError.html("");
 		if (_currentPostIndex !== _info.posts - 1){
 			//teardownAudioEvents();
 			var blog = $("li.active").text();
@@ -112,6 +122,7 @@
 	}
 	
 	function getPreviousPost(){
+		_blogError.html("");
 		if (_currentPostIndex !== 0) {
 			//teardownAudioEvents();
 			var blog = $("li.active").text();
@@ -211,6 +222,12 @@
 		}
 	}
 	
+	function errorReceived(data){
+		_blogError.html(data.message);
+		console.error(data.message);
+		console.error(data.err || "No error object provided.");
+	}
+	
 	$(function(){
 		setSocketServer();
 		_submit.on("click", addBlogToList);
@@ -221,6 +238,7 @@
 		_nextPost.on("click", getNextPost);
 		_socket.on("infoReceived", infoReceived);
 		_socket.on("textResponseReceived", textResponseReceived);
+		_socket.on("errorOccurred", errorReceived);
 		
 	});
 }(window.jQuery, window.io, window.speak, window.clippy));
