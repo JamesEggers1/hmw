@@ -128,12 +128,16 @@
 		}
 	}
 	
+	var _clippy_is_loaded = false;
 	function showClippy(){
-		clippy.load("clippy", function(agent){
-			agent.show();
-			agent.speak("Please wait while I prepare to read this to you. (10-30 seconds)");
-			agent.Play("Thinking");
-		});
+		if (!_clippy_is_loaded){
+			clippy.load("Clippy", function(agent){
+				agent.show();
+				agent.speak("Please wait while I prepare to read this to you. (10-30 seconds)");
+				agent.play("Thinking");
+				setTimeout(function(){agent.hide(); _clippy_is_loaded = false;}, 20000);
+			});
+		}
 	}
 	
 	$(function(){
