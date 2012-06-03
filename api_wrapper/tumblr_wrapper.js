@@ -35,15 +35,32 @@ function getInfo(blog, socket){
 	});
 }
 
-function getText(blog, index){
+function getText(blog, index, socket){
 	var api = new Tumblr(blog, _oAuth)
 		, pattern = /^(.*)\.tumblr\.com/
 		, blogName = pattern.exec(blog)[1];
 	
-	if (!_blogs[blogName.toLowerCase()]){getInfo(blog);}	
+	if (!_blogs[blogName.toLowerCase()]){getInfo(blog, socket);}	
 	
 	index = index || 0;
-	api.text({limit: index+1}, formatTextResponse);
+	api.text({limit: index+1}, function(err, res){
+		if (err) {formatErrorResponse(err, res, socket);}
+
+		var postIndex = res.posts.length
+			, post = res.posts[postIndex - 1]
+			, blogName = post.blog_name.toLowerCase();
+
+		var responseObject = {
+			url: post.post_url
+			, date: post.date
+			, title: post.title
+			, body: post.body
+			, index: postIndex
+			, postCount: _blogs[blogName]
+		};
+
+		socket.emit("textResponseReceived", responseObject);
+	});
 }
 	
 function formatTextResponse(err, res){
@@ -65,9 +82,9 @@ function formatTextResponse(err, res){
 	emit("textResponseReceived", responseObject);
 }
 
-function formatErrorResponse(err, res){
+function formatErrorResponse(err, res, socket){
 	console.log(err);
-	emit("errorResponseReceived", err);
+	socket.emit("errorOccurred", {message: "An Error occured while contacting Tumblr.", err:err});
 }
 
 exports.getInfo = getInfo;

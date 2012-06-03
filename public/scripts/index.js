@@ -1,5 +1,5 @@
 "use strict";
-(function($, io){
+(function($, io, speak){
 	var _blogTitle = $(".blog-title")
 		, _blogBody = $(".blog-body")
 		, _blog = $("#Blog")
@@ -11,6 +11,8 @@
 		, _nextPost = $(".next-post")
 		, _nextBlog = $(".next-blog")
 		, _socket;
+		
+	var _info;
 		
 	function setSocketServer(){
 		var scheme = window.location.protocol;
@@ -25,6 +27,7 @@
 			_blogList.find("li").removeClass("active");
 			_blogList.append("<li class=\"active\">" + blogUri + "</li>");
 			getInfo(blogUri);
+			getFirstPost(blogUri);
 		}
 	}
 	
@@ -45,6 +48,7 @@
 				currentBlog.removeClass("active");
 				previousBlog.addClass("active");
 				getInfo(previousBlog.text());
+				getFirstPost(previousBlog.text());
 				break;
 			}
 		}
@@ -68,6 +72,7 @@
 				currentBlog.removeClass("active");
 				nextBlog.addClass("active");
 				getInfo(nextBlog.text());
+				getFirstPost(nextBlog.text());
 				break;
 			}
 		}
@@ -79,16 +84,29 @@
 	}
 	
 	function infoReceived(data){
+		_info = data;
+		console.log(_info);
+	}
+	
+	function textResponseReceived(data){
 		_blogTitle.text(data.title);
 		_blogBody.html("");
-		console.dir(data);
-		_blogBody.append("<p>" + data.description + "</p>"
-			+ "<p>"
-			+ "<dl>"
-			+ "<dt>Url:</dt><dd><a href=\"" + data.url + "\">" + data.url + "</a></dd>"
-			+ "<dt>Number of Posts:<dt><dd>" + data.posts + "</dd>"
-			+ "</dl>"
-			+ "</p>");
+		_blogBody.append("<p>" + data.date + "</p>");
+		_blogBody.append("<p>" + data.url + "</p>");
+		_blogBody.append("<div class=\"audio-start\">" + data.body + "</div>");
+	}
+	
+	function getFirstPost(blog){
+		_socket.emit("getPost", {blog: blog, index:0});
+	}
+	
+	function play(){
+		var text = $(".audio-start");
+		if (text.length > 0) {
+			speak(text.text());
+		} else {
+			speak("No Post Found");
+		}
 	}
 	
 	$(function(){
@@ -96,6 +114,9 @@
 		_submit.on("click", addBlogToList);
 		_previousBlog.on("click", changeToPreviousBlog);
 		_nextBlog.on("click", changeToNextBlog);
+		_play.on("click", play);
 		_socket.on("infoReceived", infoReceived);
+		_socket.on("textResponseReceived", textResponseReceived);
+		
 	});
-}(window.jQuery, window.io));
+}(window.jQuery, window.io, window.speak));
