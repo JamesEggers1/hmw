@@ -127,6 +127,7 @@ footer.main-footer {
 
 .blog-finder-list li.active {
 	background:url("/images/active.png") 0px 2px no-repeat;
+	font-weight:bold;
 }
 
 .blog-navigation {
