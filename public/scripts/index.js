@@ -10,7 +10,13 @@
 		, _play = $(".play")
 		, _nextPost = $(".next-post")
 		, _nextBlog = $(".next-blog")
-		, _socket = io.connect('http://localhost');
+		, _socket;
+		
+	function setSocketServer(){
+		var scheme = window.location.protocol;
+		var host = window.location.host;
+		_socket = io.connect(scheme + '//' + host);
+	}
 		
 	function addBlogToList(e){
 		e.preventDefault();
@@ -86,6 +92,7 @@
 	}
 	
 	$(function(){
+		setSocketServer();
 		_submit.on("click", addBlogToList);
 		_previousBlog.on("click", changeToPreviousBlog);
 		_nextBlog.on("click", changeToNextBlog);
