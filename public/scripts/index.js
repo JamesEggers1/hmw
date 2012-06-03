@@ -1,5 +1,5 @@
 "use strict";
-(function($, io, speak){
+(function($, io, speak, clippy){
 	var _blogTitle = $(".blog-title")
 		, _blogBody = $(".blog-body")
 		, _blog = $("#Blog")
@@ -12,7 +12,8 @@
 		, _nextBlog = $(".next-blog")
 		, _socket;
 		
-	var _info;
+	var _info
+		, _currentPostIndex;
 		
 	function setSocketServer(){
 		var scheme = window.location.protocol;
@@ -97,10 +98,28 @@
 	}
 	
 	function getFirstPost(blog){
+		_currentPostIndex = 0;
 		_socket.emit("getPost", {blog: blog, index:0});
 	}
 	
+	function getNextPost(){
+		if (_currentPostIndex !== _info.posts - 1){
+			var blog = $("li.active").text();
+			_currentPostIndex += 1;
+			_socket.emit("getPost", {blog: blog, index:_currentPostIndex});
+		}
+	}
+	
+	function getPreviousPost(){
+		if (_currentPostIndex !== 0) {
+			var blog = $("li.active").text();
+			_currentPostIndex -= 1;
+			_socket.emit("getPost", {blog: blog, index:_currentPostIndex});
+		}
+	}
+	
 	function play(){
+		showClippy();
 		var text = $(".audio-start");
 		if (text.length > 0) {
 			speak(text.text());
@@ -109,14 +128,24 @@
 		}
 	}
 	
+	function showClippy(){
+		clippy.load("clippy", function(agent){
+			agent.show();
+			agent.speak("Please wait while I prepare to read this to you. (10-30 seconds)");
+			agent.Play("Thinking");
+		});
+	}
+	
 	$(function(){
 		setSocketServer();
 		_submit.on("click", addBlogToList);
 		_previousBlog.on("click", changeToPreviousBlog);
 		_nextBlog.on("click", changeToNextBlog);
 		_play.on("click", play);
+		_previousPost.on("click", getPreviousPost);
+		_nextPost.on("click", getNextPost);
 		_socket.on("infoReceived", infoReceived);
 		_socket.on("textResponseReceived", textResponseReceived);
 		
 	});
-}(window.jQuery, window.io, window.speak));
+}(window.jQuery, window.io, window.speak, window.clippy));

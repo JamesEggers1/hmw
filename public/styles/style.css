@@ -49,7 +49,7 @@ footer.main-footer {
 	border-radius: 15px;
 	box-shadow: 5px 5px 5px rgba(0,0,0, 0.2);
 	overflow-x:hidden;
-	background:rgba(128,0,0, 0.2);
+	background:rgba(0,0,0, 0.1);
 }
 
 .blog-title {
@@ -74,7 +74,7 @@ footer.main-footer {
 	border: 1px solid #ccc;
 	border-radius: 15px;
 	box-shadow:5px 5px 5px rgba(0,0,0,0.2);
-	background:rgba(128,64,128, 0.2);
+	background:rgba(32, 196, 32, 0.1);
 }
 
 .blog-finder-input {
@@ -84,7 +84,7 @@ footer.main-footer {
 	border-top: 0;
 	border-radius:15px;
 	box-shadow: 2px 0px 2px rgba(0,0,0,0.2);
-	background:rgba(128,0,128, 0.2);
+	background:rgba(128, 255, 128, 0.3);
 }
 
 .blog-finder-input input[type='text'] {
@@ -140,7 +140,7 @@ footer.main-footer {
 	border: 1px solid #ccc;
 	border-radius: 20px;
 	box-shadow:3px 3px 3px rgba(0,0,0,0.2);
-	background:rgba(128,64,128, 0.2);
+	background:rgba(128, 255, 128, 0.1);
 	cursor:pointer;
 }
 
